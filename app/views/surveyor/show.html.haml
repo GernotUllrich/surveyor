@@ -12,7 +12,7 @@
         - answered_questions = []
         - label = nil
         - answered_count = 0
-        - (questions = section.questions).each_with_index do |q, i|
+        - (questions = section.questions.to_a).each_with_index do |q, i|
           - if q.part_of_group?
             - group_questions << q # gather up the group questions
             - unless @response_set.responses.where( :question_id => q.id).empty?
