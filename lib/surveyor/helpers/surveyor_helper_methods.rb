@@ -33,7 +33,7 @@ module Surveyor
         @sections_a = @sections.to_a
         # use copy in memory instead of making extra db calls
         next_index = [(@sections_a.index(@section) || @sections.count) + 1, @sections.count].min
-        @sections_a.last == @section ? submit_tag(t('surveyor.click_here_to_finish').html_safe, :name => "finish") : submit_tag(t('surveyor.next_section').html_safe, :name => "section[#{@sections_a[next_index].id}]")
+        @sections_a.last == @section ? button_tag(t('surveyor.click_here_to_finish').html_safe, :name => "finish", class:"btn small done-button survey-page-button user-generated notranslate") : button_tag(t('surveyor.next_section').html_safe, :name => "section[#{@sections_a[next_index].id}]", class:"btn small next-button survey-page-button user-generated notranslate")
       end
 
       # Questions
@@ -43,7 +43,7 @@ module Surveyor
 
       def next_question_number(question)
         @n ||= 0
-        "<span class='qnum'>#{@n += 1}) </span>"
+        "<span class='qnum'>#{@n += 1}. </span>"
       end
 
       # Responses
