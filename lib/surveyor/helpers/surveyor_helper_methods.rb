@@ -27,7 +27,7 @@ module Surveyor
         @sections_a = @sections.to_a
         # use copy in memory instead of making extra db calls
         prev_index = [(@sections_a.index(@section) || 0) - 1, 0].max
-        submit_tag(t('surveyor.previous_section').html_safe, :name => "section[#{@sections_a[prev_index].id}]") unless @sections_a[0] == @section
+        button_tag(t('surveyor.previous_section').html_safe, :name => "section[#{@sections_a[prev_index].id}]", :class => "btn small prev-button survey-page-button user-generated notranslate") unless @sections_a[0] == @section
       end
       def next_section
         @sections_a = @sections.to_a
