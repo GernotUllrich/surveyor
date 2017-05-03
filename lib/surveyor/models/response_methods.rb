@@ -101,7 +101,7 @@ module Surveyor
       end
 
       def to_s # used in dependency_explanation_helper
-        if self.answer.response_class == "answer" and self.answer_id
+        if self.answer.andand.response_class == "answer" and self.answer_id
           return self.answer.text
         else
           return "#{(self.string_value || self.text_value || self.integer_value || self.float_value || nil).to_s}"
@@ -109,7 +109,7 @@ module Surveyor
       end
 
       def json_value
-        return nil if answer.response_class == "answer"
+        return nil if answer.andand.response_class == "answer"
 
         formats = {
           'datetime' => '%Y-%m-%dT%H:%M%:z',
@@ -117,8 +117,8 @@ module Surveyor
           'time' => '%H:%M'
         }
 
-        found = formats[answer.response_class]
-        found ? datetime_value.try{|d| d.utc.strftime(found)} : as(answer.response_class)
+        found = formats[answer.andand.response_class]
+        found ? datetime_value.try{|d| d.utc.strftime(found)} : as(answer.andand.response_class)
       end
     end
   end
