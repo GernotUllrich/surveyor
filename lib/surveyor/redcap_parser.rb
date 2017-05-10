@@ -103,7 +103,7 @@ end
 module SurveyorRedcapParserQuestionMethods
   def build_and_set(context, r)
     if !r[:section_header].blank?
-      context[:survey_section].questions.build(PermittedParams.new({:display_type => "label", :text => r[:section_header], :display_order => context[:survey_section].questions.size}))
+      context[:survey_section].questions.build({:display_type => "label", :text => r[:section_header], :display_order => context[:survey_section].questions.size})
       Surveyor::RedcapParser.rake_trace "label_ "
     end
     self.attributes = ({
@@ -140,7 +140,7 @@ module SurveyorRedcapParserDependencyMethods
       self.attributes = {:rule => hash[:rule]}
       context[:question].dependency = context[:dependency] = self
       hash[:components].each do |component|
-        dc = context[:dependency].dependency_conditions.build(PermittedParams.new(decompose_component(component).merge({ :rule_key => letters.shift } )))
+        dc = context[:dependency].dependency_conditions.build(decompose_component(component).merge({ :rule_key => letters.shift } ))
         context[:dependency_conditions] << dc
       end
       Surveyor::RedcapParser.rake_trace "dependency(#{hash[:rule]}) "
@@ -248,8 +248,8 @@ module SurveyorRedcapParserValidationMethods
       context[:question].answers.each do |a|
         self.rule = (min ? max ? "A and B" : "A" : "B")
         a.validations << context[:validation] = self
-        context[:validation].validation_conditions.build(PermittedParams.new(:rule_key => "A", :operator => ">=", :integer_value => min)) if min
-        context[:validation].validation_conditions.build(PermittedParams.new(:rule_key => "B", :operator => "<=", :integer_value => max)) if max
+        context[:validation].validation_conditions.build(:rule_key => "A", :operator => ">=", :integer_value => min) if min
+        context[:validation].validation_conditions.build(:rule_key => "B", :operator => "<=", :integer_value => max) if max
       end
     elsif type
       # date email integer number phone
@@ -260,27 +260,27 @@ module SurveyorRedcapParserValidationMethods
         context[:question].answers.each do |a|
           self.rule = "A"
           a.validations << context[:validation] = self
-          context[:validation].validation_conditions.build(PermittedParams.new(:rule_key => "A", :operator => "=~", :regexp => "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$"))
+          context[:validation].validation_conditions.build(:rule_key => "A", :operator => "=~", :regexp => "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$")
         end
       when "integer"
         context[:question].display_type = :integer if context[:question].display_type == :string
         context[:question].answers.each do |a|
           self.rule = "A"
           a.validations << context[:validation] = self
-          context[:validation].validation_conditions.build(PermittedParams.new(:rule_key => "A", :operator => "=~", :regexp => "\d+"))
+          context[:validation].validation_conditions.build(:rule_key => "A", :operator => "=~", :regexp => "\d+")
         end
       when "number"
         context[:question].display_type = :float if context[:question].display_type == :string
         context[:question].answers.each do |a|
           self.rule = "A"
           a.validations << context[:validation] = self
-          context[:validation].validation_conditions.build(PermittedParams.new(:rule_key => "A", :operator => "=~", :regexp => "^\d*(,\d{3})*(\.\d*)?$"))
+          context[:validation].validation_conditions.build(:rule_key => "A", :operator => "=~", :regexp => "^\d*(,\d{3})*(\.\d*)?$")
         end
       when "phone"
         context[:question].answers.each do |a|
                     self.rule = "A"
           a.validations << context[:validation] = self
-          context[:validation].validation_conditions.build(PermittedParams.new(:rule_key => "A", :operator => "=~", :regexp => "\d{3}.*\d{4}"))
+          context[:validation].validation_conditions.build(:rule_key => "A", :operator => "=~", :regexp => "\d{3}.*\d{4}")
         end
       end
     end
