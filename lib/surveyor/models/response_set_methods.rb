@@ -160,7 +160,7 @@ module Surveyor
                 fail "Illegal attempt to change question for response #{api_id}."
               end
 
-              existing.update_attributes(updateable_attributes)
+              existing.update_attributes(PermittedParams.new(updateable_attributes))
             else
               responses.build(PermittedParams.new(updateable_attributes)).tap do |r|
                 r.api_id = api_id
