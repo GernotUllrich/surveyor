@@ -162,7 +162,7 @@ module Surveyor
 
               existing.update_attributes(updateable_attributes)
             else
-              responses.build(updateable_attributes).tap do |r|
+              responses.build(PermittedParams.new(updateable_attributes)).tap do |r|
                 r.api_id = api_id
                 r.save!
               end
